@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useInput } from './hooks/input'
 import AnimatedText from './components/AnimatedText'
 import styled from 'styled-components'
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
 const NAME = 'Sebastian Andreasson'
 const COMMANDS = ['help', 'ls', 'clear', 'cwd']
