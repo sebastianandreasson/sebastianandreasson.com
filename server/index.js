@@ -1,14 +1,16 @@
 require('dotenv').config()
 
 const express = require('express')
+const serverless = require('serverless-http')
 const { Keystone } = require('@keystonejs/keystone')
-const { MongooseAdapter } = require('@keystonejs/adapter-mongoose')
+const { KnexAdapter } = require('@keystonejs/adapter-knex')
 const { GraphQLApp } = require('@keystonejs/app-graphql')
 const { AdminUIApp } = require('@keystonejs/app-admin-ui')
+const { NextApp } = require('@keystonejs/app-next')
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
 
 const keystone = new Keystone({
-  adapter: new MongooseAdapter(),
+  adapter: new KnexAdapter({ dropDatabase: true }),
   name: process.env.NAME || 'keystone-docker',
   cookieSecret: process.env.COOKIE_SECRET,
 })
@@ -27,10 +29,11 @@ const authStrategy = keystone.createAuthStrategy({
 
 const apps = [
   new GraphQLApp(),
-  new AdminUIApp({ adminPath: '/admin', authStrategy }),
+  new AdminUIApp({ adminPath: '/admin' }),
+  new NextApp({ dir: '../src' }),
 ]
 
-keystone
+const setup = keystone
   .prepare({
     apps,
     dev: process.env.NODE_ENV !== 'production',
@@ -38,5 +41,11 @@ keystone
   .then(async ({ middlewares }) => {
     await keystone.connect()
     const app = express()
-    app.use(middlewares).listen(4000)
+    app.use(middlewares)
+    return serverless(app)
   })
+
+module.exports.handler = async (event, context) => {
+  const handler = await setup()
+  return handler(event, context)
+}
