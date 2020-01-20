@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Ls from './Ls'
 
@@ -27,16 +27,16 @@ export default ({ value }) => {
 
   switch (value) {
     case 'ls':
-      components.push(<Ls />)
+      components.push(<Ls key={`Ls_${value}`} />)
       break
     case 'help':
-      components.push(<Help />)
+      components.push(<Help key={`Help_${value}`} />)
       break
     case 'cwd':
-      components.push(<CurrentDirectory />)
+      components.push(<CurrentDirectory key={`CurrentDirectory_${value}`} />)
       break
     default:
-      components.push(<NotFound value={value} />)
+      components.push(<NotFound value={value} key={`NotFound_${value}`} />)
       break
   }
 

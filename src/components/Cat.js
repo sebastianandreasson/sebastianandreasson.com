@@ -1,6 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-import ReactMarkdown from 'react-markdown'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 

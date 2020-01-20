@@ -16,7 +16,7 @@
     "dotenv": "4.0.0",
     "express": "^4.17.1",
     "graphql-tag": "^2.10.1",
-    "next": "^9.1.7",
+    "next": "^9.2.0",
     "next-with-apollo": "^4.3.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -26,10 +26,9 @@
     "styled-components": "^4.4.1"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "serverless offline",
     "build": "next build",
-    "start": "next start",
-    "server": "node server/index.js"
+    "start": "node handler"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,9 +46,11 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^1.19.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1"
+    "@testing-library/user-event": "^7.2.1",
+    "prettier": "^1.19.1",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^6.0.0-alpha.62"
   }
 }

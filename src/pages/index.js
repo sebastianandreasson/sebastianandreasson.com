@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { useInput } from './hooks/input'
-import AnimatedText from './components/AnimatedText'
+import { useInput } from '../hooks/input'
+import AnimatedText from '../components/AnimatedText'
 import styled from 'styled-components'
-import Command from './components/Command'
+import Command from '../components/Command'
 
 const NAME = ''
 

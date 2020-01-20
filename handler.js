@@ -30,10 +30,10 @@ const authStrategy = keystone.createAuthStrategy({
 const apps = [
   new GraphQLApp(),
   new AdminUIApp({ adminPath: '/admin' }),
-  new NextApp({ dir: '../src' }),
+  new NextApp({ dir: './src' }),
 ]
 
-const setup = keystone
+keystone
   .prepare({
     apps,
     dev: process.env.NODE_ENV !== 'production',
@@ -41,11 +41,12 @@ const setup = keystone
   .then(async ({ middlewares }) => {
     await keystone.connect()
     const app = express()
-    app.use(middlewares)
-    return serverless(app)
+    app.use(middlewares).listen(3000)
+    // return serverless(app)
   })
 
-module.exports.handler = async (event, context) => {
-  const handler = await setup()
-  return handler(event, context)
-}
+// module.exports.run = async (event, context) => {
+//   console.log('req', event.path)
+//   const handler = await setup
+//   return handler(event, context)
+// }
