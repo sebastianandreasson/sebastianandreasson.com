@@ -4,7 +4,16 @@ website:
   component: serverless-next.js
   inputs:
     domain: ['test', 'sebastianandreasson.com']
-# functions:
+api:
+  component: '@serverless/aws-lambda'
+  inputs:
+    name: sebastianandreasson-com-api
+    code: './server'
+    handler: handler.api
+    env:
+      CONNECT_TO: postgres://postgres:coolpassword@keystone-test.cluster-cew5h8mmmv9h.eu-north-1.rds.amazonaws.com:5432/keystone
+    region: us-east-1
+    # functions:
 #   next:
 #     handler: handler.run
 #     events:

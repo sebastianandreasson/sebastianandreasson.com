@@ -1,0 +1,21 @@
+{
+  "name": "sebastianandreasson.com",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@keystonejs/adapter-knex": "^6.1.3",
+    "@keystonejs/app-graphql": "^5.0.2",
+    "@keystonejs/auth-password": "^5.0.1",
+    "@keystonejs/fields": "^6.1.0",
+    "@keystonejs/fields-markdown": "^5.0.4",
+    "@keystonejs/keystone": "5.4.1",
+    "dotenv": "4.0.0",
+    "express": "^4.17.1",
+    "serverless-http": "^2.3.0"
+  },
+  "scripts": {
+    "dev": "serverless offline",
+    "build": "next build",
+    "start": "node handler"
+  }
+}
