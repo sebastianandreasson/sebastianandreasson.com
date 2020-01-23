@@ -1,27 +1,16 @@
-org: sebastianandreasson
-app: sebastianandreasson-com
-service: sebastianandreasson-com
+name: 'sebastianandreasson-com'
 
-package:
-  individually: true
-
-plugins:
-  - serverless-offline
-  - serverless-dotenv-plugin
-
-provider:
-  name: aws
-  runtime: nodejs12.x
-  stage: prod
-  region: eu-north-1
-
-functions:
-  next:
-    handler: handler.run
-    events:
-      - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{any+}
-          method: ANY
+website:
+  component: serverless-next.js
+  inputs:
+    domain: ['test', 'sebastianandreasson.com']
+# functions:
+#   next:
+#     handler: handler.run
+#     events:
+#       - http:
+#           path: /
+#           method: ANY
+#       - http:
+#           path: /{any+}
+#           method: ANY

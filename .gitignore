@@ -23,4 +23,5 @@ jspm_packages
 
 .next
 .serverless
+.serverless_nextjs
 .env

@@ -6,7 +6,6 @@ const { Keystone } = require('@keystonejs/keystone')
 const { KnexAdapter } = require('@keystonejs/adapter-knex')
 const { GraphQLApp } = require('@keystonejs/app-graphql')
 const { AdminUIApp } = require('@keystonejs/app-admin-ui')
-const { NextApp } = require('@keystonejs/app-next')
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
 
 const keystone = new Keystone({
@@ -27,13 +26,9 @@ const authStrategy = keystone.createAuthStrategy({
   config: {},
 })
 
-const apps = [
-  new GraphQLApp(),
-  new AdminUIApp({ adminPath: '/admin' }),
-  new NextApp({ dir: './src' }),
-]
+const apps = [new GraphQLApp(), new AdminUIApp({ adminPath: '/admin' })]
 
-keystone
+const setup = keystone
   .prepare({
     apps,
     dev: process.env.NODE_ENV !== 'production',
@@ -41,12 +36,12 @@ keystone
   .then(async ({ middlewares }) => {
     await keystone.connect()
     const app = express()
-    app.use(middlewares).listen(3000)
-    // return serverless(app)
+    app.use(middlewares)
+    return serverless(app)
   })
 
-// module.exports.run = async (event, context) => {
-//   console.log('req', event.path)
-//   const handler = await setup
-//   return handler(event, context)
-// }
+module.exports.run = async (event, context) => {
+  console.log('req', event.path)
+  const handler = await setup
+  return handler(event, context)
+}
