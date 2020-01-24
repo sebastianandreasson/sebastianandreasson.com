@@ -16,9 +16,8 @@
     "styled-components": "^4.4.1"
   },
   "scripts": {
-    "dev": "serverless offline",
-    "build": "next build",
-    "start": "node handler"
+    "dev": "next",
+    "build": "next build"
   },
   "eslintConfig": {
     "extends": "react-app"

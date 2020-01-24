@@ -1,56 +1,36 @@
 require('dotenv').config()
 
 const express = require('express')
+const cors = require('cors')
 const serverless = require('serverless-http')
 const { Keystone } = require('@keystonejs/keystone')
 const { KnexAdapter } = require('@keystonejs/adapter-knex')
 const { GraphQLApp } = require('@keystonejs/app-graphql')
-// const { AdminUIApp } = require('@keystonejs/app-admin-ui')
-const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
 
 const keystone = new Keystone({
-  adapter: new KnexAdapter({ dropDatabase: true }),
-  name: process.env.NAME || 'keystone-docker',
+  adapter: new KnexAdapter(),
+  name: process.env.NAME || 'keystone',
   cookieSecret: process.env.COOKIE_SECRET,
 })
+require('./lists')(keystone)
 
-const UsersSchema = require('./lists/Users.js')
-
-keystone.createList('User', UsersSchema)
-const ProjectsSchema = require('./lists/Projects.js')
-keystone.createList('Project', ProjectsSchema)
-
-const authStrategy = keystone.createAuthStrategy({
-  type: PasswordAuthStrategy,
-  list: 'User',
-  config: {},
-})
-
-const setup = apps =>
-  keystone
-    .prepare({
-      apps,
-      dev: process.env.NODE_ENV !== 'production',
-    })
-    .then(async ({ middlewares }) => {
-      await keystone.connect()
-      const app = express()
-      app.use(middlewares)
-      return serverless(app)
-    })
-
-const setupApi = setup([
-  new GraphQLApp({ apiPath: '/', graphiqlPath: 'graphiql' }),
-])
-// const setupAdmin = setup([new AdminUIApp({ adminPath: '/' })])
+const setup = keystone
+  .prepare({
+    apps: [new GraphQLApp({ apiPath: '/', graphiqlPath: 'graphiql' })],
+    dev: process.env.NODE_ENV !== 'production',
+  })
+  .then(async ({ middlewares }) => {
+    await keystone.connect()
+    const app = express()
+    app.use(cors())
+    app.use(middlewares)
+    return serverless(app)
+  })
 
 module.exports = {
   api: async (event, context) => {
-    const handler = await setupApi
+    console.log('event received: ', event)
+    const handler = await setup
     return handler(event, context)
   },
-  // admin: async (event, context) => {
-  //   const handler = await setupAdmin
-  //   return handler(event, context)
-  // },
 }
